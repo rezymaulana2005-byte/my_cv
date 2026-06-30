@@ -310,6 +310,8 @@ footer {
     flex-shrink: 0;
     opacity: 0.5;
     transform: scale(0.85);
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .slide-card.active {
@@ -365,6 +367,10 @@ footer {
     justify-content: center;
     cursor: pointer;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 .play-btn:hover {
@@ -449,6 +455,10 @@ footer {
     font-size: 1.6rem;
     cursor: pointer;
     z-index: 15;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 .slider-btn:hover {
@@ -473,6 +483,8 @@ footer {
     border-radius: 50%;
     cursor: pointer;
     transition: all 0.3s;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .dot.active {
