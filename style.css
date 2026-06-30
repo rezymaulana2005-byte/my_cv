@@ -1,12 +1,17 @@
 /* --- RESET & BASE STYLES --- */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+html {
+    overscroll-behavior-y: none;
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: white;
     background-color: #1a1a1a;
     line-height: 1.6;
     overflow-x: hidden;
+    overscroll-behavior-y: none;
 }
 
 a { text-decoration: none; color: white; cursor: pointer; }
@@ -284,6 +289,7 @@ footer {
     max-width: 400px;
     margin: 0 auto;
     padding: 0 60px;
+    overflow: hidden;
 }
 
 .slider-wrapper {
@@ -475,7 +481,15 @@ footer {
     border-radius: 6px;
 }
 
-#audioPlayer { display: none !important; }
+#audioPlayer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+}
 
 /* --- LIFE STORY --- */
 .life-story-section {
