@@ -14,7 +14,15 @@ function switchPage(pageId) {
     });
     document.getElementById('link-' + pageId).classList.add('active');
 
-    // 4. Scroll ke atas
+    // 4. Tampilkan/sembunyikan nav: hanya judul yang muncul saat di Home
+    var header = document.getElementById('site-header');
+    if (pageId === 'home') {
+        header.classList.add('home-view');
+    } else {
+        header.classList.remove('home-view');
+    }
+
+    // 5. Scroll ke atas
     window.scrollTo(0, 0);
 }
 
