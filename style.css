@@ -1,0 +1,257 @@
+/* === FIX BEBERAPA STYLE DASAR AGAR LEBIH FLEKSIBEL DI MOBILE === */
+header {
+    padding: 0 20px;
+}
+
+nav ul {
+    gap: 20px;
+}
+
+.page {
+    padding: 30px 20px;
+}
+
+.work-grid {
+    /* sebelumnya pakai grid-template-columns padahal display:flex, ini sumber bug di mobile */
+    display: flex;
+}
+
+/* === MEDIA QUERY UNTUK TABLET KE BAWAH (≤768px) === */
+@media (max-width: 768px) {
+
+    /* --- HEADER & NAVIGASI --- */
+    header {
+        height: auto;
+        flex-direction: column;
+        padding: 15px 20px;
+        gap: 10px;
+    }
+
+    nav ul {
+        gap: 18px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    nav ul li a {
+        font-size: 0.9rem;
+    }
+
+    main {
+        padding-top: 110px; /* sesuaikan karena header jadi lebih tinggi */
+    }
+
+    /* --- HOME PAGE --- */
+    .hello-text {
+        font-size: 2.8rem;
+    }
+
+    .my-name-is {
+        font-size: 1.4rem;
+    }
+
+    .user-name {
+        font-size: 2.2rem;
+        margin-bottom: 30px;
+    }
+
+    .btn-started {
+        padding: 14px 35px;
+        font-size: 1rem;
+    }
+
+    /* --- ABOUT PAGE: INTRO --- */
+    .intro-segment {
+        flex-direction: column;
+        text-align: center;
+        gap: 25px;
+        margin-top: 30px;
+    }
+
+    .profile-pic {
+        width: 160px;
+        height: 160px;
+    }
+
+    .intro-content h2 {
+        font-size: 1.8rem;
+    }
+
+    .intro-content p {
+        font-size: 1rem;
+    }
+
+    /* --- SKILLS GRID --- */
+    .skills-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .what-can-i-do-section h2 {
+        font-size: 1.8rem;
+        margin-bottom: 30px;
+    }
+
+    .custom-photo {
+        height: 90px;
+    }
+
+    .skill-title {
+        font-size: 0.95rem;
+    }
+
+    /* --- HOBBIES GRID --- */
+    .hobbies-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .hobbies-section h2 {
+        font-size: 1.8rem;
+        margin-bottom: 30px;
+    }
+
+    .hobby-photo {
+        height: 90px;
+    }
+
+    /* --- MUSIC SLIDER --- */
+    .music-section {
+        padding: 0 10px;
+        margin-top: 50px;
+    }
+
+    .music-section h2 {
+        font-size: 1.8rem;
+        margin-bottom: 35px;
+    }
+
+    .slider-container {
+        max-width: 100%;
+        padding: 0 45px;
+    }
+
+    .slide-image {
+        height: 320px;
+    }
+
+    .slider-btn {
+        width: 42px;
+        height: 42px;
+        font-size: 1.2rem;
+    }
+
+    .play-btn {
+        width: 70px;
+        height: 70px;
+    }
+
+    .play-btn svg {
+        width: 28px;
+        height: 28px;
+    }
+
+    /* --- LIFE TIMER --- */
+    .life-timer-section {
+        padding: 30px 15px;
+    }
+
+    .life-timer-section h2 {
+        font-size: 1.8rem;
+    }
+
+    .date-part {
+        font-size: 1.4rem;
+    }
+
+    .time-part {
+        font-size: 1.8rem;
+    }
+
+    /* --- WORK EXPERIENCE --- */
+    .work-experience-section h2 {
+        font-size: 1.8rem;
+    }
+
+    .work-grid {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .work-card {
+        width: 100%;
+        max-width: 100%;
+        min-height: auto;
+    }
+
+    /* --- PORTFOLIO --- */
+    .portfolio-section h2 {
+        font-size: 1.8rem;
+    }
+
+    .portfolio-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    /* --- ABOUT DETAIL --- */
+    .about-detail-section h2 {
+        font-size: 1.8rem;
+    }
+
+    .detail-card {
+        max-width: 100%;
+        padding: 20px;
+    }
+
+    .detail-image-wrap {
+        height: 220px;
+    }
+
+    /* --- SOCIAL / CONTACT --- */
+    .social-links {
+        gap: 30px;
+    }
+
+    .social-btn {
+        width: 75px;
+        height: 75px;
+    }
+
+    .social-name {
+        font-size: 0.95rem;
+    }
+}
+
+/* === MEDIA QUERY UNTUK HP KECIL (≤480px) === */
+@media (max-width: 480px) {
+    .hello-text {
+        font-size: 2.2rem;
+    }
+
+    .user-name {
+        font-size: 1.8rem;
+    }
+
+    .skills-grid,
+    .hobbies-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .slider-container {
+        padding: 0 35px;
+    }
+
+    .slide-image {
+        height: 260px;
+    }
+
+    .social-links {
+        gap: 20px;
+    }
+
+    .social-btn {
+        width: 65px;
+        height: 65px;
+    }
+}
