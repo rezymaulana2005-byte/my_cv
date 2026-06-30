@@ -1,3 +1,12 @@
+/* --- CUSTOM FONT: ALGERIAN --- */
+@font-face {
+    font-family: 'Algerian';
+    src: url('fonts/Algerian-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 /* --- RESET & BASE STYLES --- */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -32,9 +41,24 @@ header {
 }
 
 .brand-name {
-    font-size: 1.2rem;
+    font-family: 'Algerian', 'Copperplate', 'Trattatello', fantasy;
+    font-size: 1.4rem;
     font-weight: 600;
     letter-spacing: 1px;
+    transition: font-size 0.3s ease;
+}
+
+/* Saat di halaman Home: nav disembunyikan, judul jadi fokus utama dan diperbesar */
+header.home-view {
+    justify-content: center;
+}
+
+header.home-view nav {
+    display: none;
+}
+
+header.home-view .brand-name {
+    font-size: 1.8rem;
 }
 
 nav ul {
@@ -901,6 +925,10 @@ footer {
 
     nav ul li a {
         font-size: 0.9rem;
+    }
+
+    header.home-view .brand-name {
+        font-size: 1.5rem;
     }
 
     main {
