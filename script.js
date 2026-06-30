@@ -127,6 +127,14 @@ function goToSlide(idx) {
 }
 
 // Keyboard
+// Cegah tombol slider mengambil focus saat di-tap (sumber scroll-jump di mobile)
+document.querySelectorAll('.slider-btn').forEach(function(btn) {
+    btn.addEventListener('touchstart', function(e) {
+        e.preventDefault();
+        btn.click();
+    }, {passive: false});
+});
+
 document.addEventListener('keydown', function(e) {
     if (e.key === 'ArrowLeft') moveSlide(-1);
     if (e.key === 'ArrowRight') moveSlide(1);
