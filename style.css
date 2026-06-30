@@ -1,334 +1,1194 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Portofolio - Rezy Maulana</title>
-    <link rel="stylesheet" href="style.css">  <!-- Ini harus ada -->
-</head>
-<body>
+/* --- CUSTOM FONT: ALGERIAN --- */
+@font-face {
+    font-family: 'Algerian';
+    src: url('fonts/Algerian-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
 
-    <!-- HEADER -->
-    <header id="site-header" class="home-view">
-        <div class="brand-name">CURRICULUM VITAE</div>
-        <nav>
-            <ul>
-                <li><a href="#" onclick="switchPage('home')" id="link-home" class="active">Home</a></li>
-                <li><a href="#" onclick="switchPage('about')" id="link-about">About Me</a></li>
-                <li><a href="#" onclick="switchPage('contact')" id="link-contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
+/* --- RESET & BASE STYLES --- */
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-    <main>
-        <!-- HOME -->
-        <section id="home-page" class="page active">
-            <div class="hello-text">Hello</div>
-            <div class="my-name-is">my name is</div>
-            <div class="user-name">Rezy Maulana!</div>
-            <a href="#" onclick="switchPage('about')" class="btn-started">Let's know more about me^^</a>
-        </section>
+html {
+    overscroll-behavior-y: none;
+}
 
-    <!-- PAGE: ABOUT ME -->
-        <section id="about-page" class="page">
-            <!-- Segmen 1: Perkenalan -->
-            <div class="segment intro-segment">
-                <img src="image/foto-profil.jpg" alt="Foto Profil" class="profile-pic">
-                <div class="intro-content">
-                    <h2>السَّلاَمُ عَلَيْكُمْ وَرَحْمَةُ اللهِ وَبَرَكَاتُهُ</h2>
-                    <p>Halo! perkenalkan nama saya Rezy Maulana, saya seorang seniman dan juga web developer, dan juga seorang gamer wkwkwk. di dunia maya saya dikenal dengan nama zy/ryu/zynn/ryuzynn, saya sekarang sedang menempuh pendidikan di Universitas Terbuka.</p>
-                </div>
-            </div>
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
+    background-color: #1a1a1a;
+    line-height: 1.6;
+    overflow-x: hidden;
+    overscroll-behavior-y: none;
+}
 
-            <!-- Segmen 2: What Can I Do -->
-            <div class="segment what-can-i-do-section">
-                <h2>What Can I Do</h2>
-                <div class="skills-grid">
-                    <div class="skill-card">
-                        <img src="image/skill1.png" alt="Web Development" class="custom-photo">
-                        <div class="skill-title">Web Development</div>
-                    </div>
-                    <div class="skill-card">
-                        <img src="image/skill2.png" alt="UI/UX Design" class="custom-photo">
-                        <div class="skill-title">Digital Drawing</div>
-                    </div>
-                    <div class="skill-card">
-                        <img src="image/skill3.png" alt="Photography" class="custom-photo">
-                        <div class="skill-title">Video Editing</div>
-                    </div>
-                </div>
-            </div>
+a { text-decoration: none; color: white; cursor: pointer; }
 
-            <!-- Segmen 3: Hobi -->
-            <div class="segment hobbies-section">
-                <h2>My Hobbies</h2>
-                <div class="hobbies-grid">
-                    <div class="hobby-card">
-                        <img src="image/hobi1.png" alt="Hobi 1" class="hobby-photo">
-                        <div class="hobby-name">Coding</div>
-                    </div>
-                    <div class="hobby-card">
-                        <img src="image/hobi2.png" alt="Hobi 2" class="hobby-photo">
-                        <div class="hobby-name">Gaming</div>
-                    </div>
-                    <div class="hobby-card">
-                        <img src="image/hobi3.png" alt="Hobi 3" class="hobby-photo">
-                        <div class="hobby-name">Photography</div>
-                    </div>
-                    <div class="hobby-card">
-                        <img src="image/hobi4.png" alt="Hobi 4" class="hobby-photo">
-                        <div class="hobby-name">Music</div>
-                    </div>
-                </div>
-            </div>
+/* --- FIXED HEADER --- */
+header {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 70px;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 50px;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
 
-            <!-- Segmen 4: Music Favorite -->
-            <div class="segment music-section">
-                <h2>My Favorite Music</h2>
-                <div class="slider-container">
-                    <button class="slider-btn prev" type="button" onclick="moveSlide(-1)">&#10094;</button>
-                    <button class="slider-btn next" type="button" onclick="moveSlide(1)">&#10095;</button>
+.brand-name {
+    font-family: 'Algerian', 'Copperplate', 'Trattatello', fantasy;
+    font-size: 1.4rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: font-size 0.3s ease;
+}
 
-                    <div class="slider-wrapper" id="musicSlider">
-                        <div class="slide-card" onclick="playMusic(this, 'music/lagu1.mp3')">
-                            <img src="image/cover1.jpg" class="slide-image">
-                            <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
-                            <div class="slide-title">Multo</div>
-                            <div class="slide-artist">Cup of Joe</div>
-                        </div>
+/* Saat di halaman Home: nav disembunyikan, judul tetap sejajar kiri seperti teks Hello */
+header.home-view {
+    justify-content: flex-start;
+}
 
-                        <div class="slide-card" onclick="playMusic(this, 'music/lagu2.mp3')">
-                            <img src="image/cover2.jpg" class="slide-image">
-                            <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
-                            <div class="slide-title">About You</div>
-                            <div class="slide-artist">The 1975</div>
-                        </div>
+header.home-view nav {
+    display: none;
+}
 
-                        <div class="slide-card" onclick="playMusic(this, 'music/lagu3.mp3')">
-                            <img src="image/cover3.jpg" class="slide-image">
-                            <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
-                            <div class="slide-title">Impostor Syndrome</div>
-                            <div class="slide-artist">Sydney Gish</div>
-                        </div>
+header.home-view .brand-name {
+    font-size: 1.8rem;
+}
 
-                        <div class="slide-card" onclick="playMusic(this, 'music/lagu4.mp3')">
-                            <img src="image/cover4.jpg" class="slide-image">
-                            <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
-                            <div class="slide-title">Her</div>
-                            <div class="slide-artist">Jvke</div>
-                        </div>
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 40px;
+}
 
-                        <div class="slide-card" onclick="playMusic(this, 'music/lagu5.mp3')">
-                            <img src="image/cover5.jpg" class="slide-image">
-                            <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
-                            <div class="slide-title">Let Down</div>
-                            <div class="slide-artist">Radio Head</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="slider-dots" id="sliderDots"></div>
-            </div>
+nav ul li a {
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    padding-bottom: 5px;
+}
 
-            <audio id="audioPlayer"></audio>
+nav ul li a:hover { color: #aaa; }
 
-            <!-- My Life Story -->
-            <div class="segment life-story-section">
-                <h2>My Life Story</h2>
+nav ul li a.active {
+    font-weight: bold;
+    color: #fff;
+    border-bottom: 2px solid #fff;
+}
 
-                <!-- Bagian 1 -->
-                <div class="story-part">
-                    <div class="story-img-wrap">
-                        <img src="image/beginning.jpg" class="story-image-bg">
-                    </div>
-                    <div class="story-text">
-                        <div class="story-title">The Beginning</div>
-                        <div class="story-year">2005</div>
-                        <div class="story-desc">Ia lahir pada tanggal 19 Oktober 2005. Disinilah perjalanan hidup anak bungsu dari 4 bersaudara ini dimulai.</div>
-                    </div>
-                </div>
+/* --- MAIN CONTENT --- */
+main {
+    padding-top: 70px;
+    min-height: 100vh;
+}
 
-                <!-- Bagian 2 -->
-                <div class="story-part">
-                    <div class="story-img-wrap">
-                        <img src="image/childhood.jpg" class="story-image-bg">
-                    </div>
-                    <div class="story-text">
-                        <div class="story-title">Childhood</div>
-                        <div class="story-year">2006-2012</div>
-                        <div class="story-desc">Masa kecil yang penuh tawa dan kenangan indah. Setiap hari adalah petualangan baru, masa dimana tidak ada rasa khawatir untuk hari esok.</div>
-                    </div>
-                </div>
+.page {
+    display: none;
+    min-height: calc(100vh - 90px);
+    padding: 50px;
+    animation: fadeIn 0.5s ease;
+}
 
-                <!-- Bagian 3 -->
-                <div class="story-part">
-                    <div class="story-img-wrap">
-                        <img src="image/School.jpg" class="story-image-bg">
-                    </div>
-                    <div class="story-text">
-                        <div class="story-title">School Years</div>
-                        <div class="story-year">2012-2018</div>
-                        <div class="story-desc">Masa dimana anak kecil yang baru mengenal dunia luar ini mulai menjalani masa sekolah dasar, walaupun dimasa ini tidak terlalu menyenangkan tapi ia bisa melewati masa masa ini sampai selesai.</div>
-                    </div>
-                </div>
+.page.active { display: block; }
 
-                <!-- Bagian 4 -->
-                <div class="story-part">
-                    <div class="story-img-wrap">
-                        <img src="image/teenage.jpg" class="story-image-bg">
-                    </div>
-                    <div class="story-text">
-                        <div class="story-title">Teenage</div>
-                        <div class="story-year">2018-2023</div>
-                        <div class="story-desc">Masa remaja penuh kegagalan tapi juga pembelajaran. di masa ini ia mulai berani untuk keluar dari zona nyaman nya dan mulai dikenal orang".</div>
-                    </div>
-                </div>
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 
-                <!-- Bagian 5 -->
-                <div class="story-part">
-                    <div class="story-img-wrap">
-                        <img src="image/present.jpg" class="story-image-bg">
-                    </div>
-                    <div class="story-text">
-                        <div class="story-title">Present</div>
-                        <div class="story-year">2024-Sekarang</div>
-                        <div class="story-desc">Terus berkembang dan belajar dari kesalahan yang telah lalu, just seeking for peace, no enemies, learn to forgive not to hate.</div>
-                    </div>
-                </div>
-            </div>
+/* --- FOOTER --- */
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #111;
+    color: #666;
+    font-size: 0.85rem;
+    width: 100%;
+}
 
-            <div class="segment life-timer-section">
-                <h2>My Life Since I Born</h2>
-                <div class="timer-box">
-                    <div class="date-part" id="date-counter">Loading...</div>
-                    <div class="time-part" id="time-counter">Loading...</div>
-                </div>
-            </div>
+/* --- HOME PAGE --- */
+#home-page {
+    position: relative;
+}
 
-            <!-- About Me Detail -->
-            <div class="segment about-detail-section">
-                <h2>Sisi Gelap</h2>
+#home-page::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('image/bg-home.jpg');
+    background-size: cover;
+    background-position: center;
+    filter: blur(4px);
+    -webkit-filter: blur(4px);
+    z-index: -1;
+}
 
-                <div class="detail-card">
-                    <div class="detail-image-wrap">
-                        <img src="image/foto-saya.png" class="detail-image" alt="Foto Saya">
-                    </div>
-                    <div class="detail-desc">
-                        Pernah hampir terjerumus menjadi Wibu stress.
-                    </div>
-                    <div class="sticker-wrap">
-                        <img src="image/sticker.png" class="sticker-image" alt="Sticker">
-                    </div>
-                </div>
-            </div>
+.hello-text {
+    font-size: 6rem;
+    font-weight: 800;
+    line-height: 1;
+}
 
-            <!-- Work Experience -->
-            <div class="segment work-experience-section">
-                <h2>Work Experience</h2>
+.my-name-is {
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: #ccc;
+}
 
-                <div class="work-grid">
-                    <!-- Kotak 1 -->
-                    <div class="work-card">
-                        <div class="work-logo-wrap">
-                            <img src="image/logo1.png" class="work-logo" alt="Logo 1">
-                        </div>
-                        <div class="work-job">Kurir</div>
-                        <div class="work-desc">Saya sempat bekerja menjadi kurir Shopee Expres selama 2 tahun lamanya (2023-2025.)</div>
-                    </div>
+.user-name {
+    font-size: 4rem;
+    font-weight: 700;
+    margin-bottom: 50px;
+}
 
-                    <!-- Kotak 2 -->
-                    <div class="work-card">
-                        <div class="work-logo-wrap">
-                            <img src="image/logo2.png" class="work-logo" alt="Logo 2">
-                        </div>
-                        <div class="work-job">Daily Operator</div>
-                        <div class="work-desc">Setelah 2 tahun menjadi kurir saya sempat juga mencoba menjadi Daily Operator di ekspedisi tersebut.</div>
-                    </div>
+.btn-started {
+    display: inline-block;
+    padding: 18px 60px;
+    background-color: #fff;
+    color: #141e30;
+    border-radius: 50px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
 
-                    <!-- Kotak 3 -->
-                    <div class="work-card">
-                        <div class="work-logo-wrap">
-                            <img src="image/logo3.png" class="work-logo" alt="Logo 3">
-                        </div>
-                        <div class="work-job">Editor</div>
-                        <div class="work-desc">Saya juga sempat menjadi Editor di salah satu VapeShop di daerah tempat saya tinggal.</div>
-                    </div>
+.btn-started:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+}
 
-                    <!-- Kotak 4 -->
-                    <div class="work-card">
-                        <div class="work-logo-wrap">
-                            <img src="image/logo4.png" class="work-logo" alt="Logo 4">
-                        </div>
-                        <div class="work-job">FreeLancer</div>
-                        <div class="work-desc">Setelah resign dari VapeShop saya pun memutuskan menjadi seorang Freelancer di rumah.</div>
-                    </div>
-                </div>
-            </div>
+/* --- ABOUT PAGE --- */
+#about-page {
+    position: relative;
+}
 
-            <!-- Portfolio Section -->
-            <div class="segment portfolio-section">
-                <h2>My Projects</h2>
+#about-page::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('image/bg-about.jpg');
+    background-size: cover;
+    background-position: center;
+    filter: blur(4px);
+    -webkit-filter: blur(4px);
+    z-index: -1;
+}
 
-                <div class="portfolio-grid">
-                    <!-- Projek 1 -->
-                    <div class="portfolio-card">
-                        <div class="portfolio-image-wrap">
-                            <img src="image/projek1.png" class="portfolio-image" alt="Projek 1">
-                        </div>
-                        <div class="portfolio-title">Website Development</div>
-                        <div class="portfolio-desc">Membuat website pribadi maupun publik dengan desain modern dan responsif.</div>
-                    </div>
+.intro-segment {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    flex-wrap: wrap;
+    margin-top: 50px;
+}
 
-                    <!-- Projek 2 -->
-                    <div class="portfolio-card">
-                        <div class="portfolio-image-wrap">
-                            <img src="image/projek2.png" class="portfolio-image" alt="Projek 2">
-                        </div>
-                        <div class="portfolio-title">Digital Drawing</div>
-                        <div class="portfolio-desc">Membuat Gambar Digital untuk pribadi atau untuk komisi klien.</div>
-                    </div>
+.profile-pic {
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 6px solid rgba(255, 255, 255, 0.2);
+    background-color: #333;
+}
 
-                    <!-- Projek 3 -->
-                    <div class="portfolio-card">
-                        <div class="portfolio-image-wrap">
-                            <img src="image/projek3.png" class="portfolio-image" alt="Projek 3">
-                        </div>
-                        <div class="portfolio-title">Video Editing</div>
-                        <div class="portfolio-desc">Editing dan Processing Video menjadi suatu konten untuk konsumsi pribadi maupun publik.</div>
-                    </div>
-                </div>
-            </div>
-        </section>
+.intro-content h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
 
-        <!-- CONTACT -->
-        <section id="contact-page" class="page">
-            <h1 class="contact-title">Contact Me</h1>
-            <div class="social-links">
-                <a href="https://instagram.com/zyy_mln" target="_blank" class="social-item">
-                    <div class="social-btn">
-                        <img src="image/ig.png" alt="Instagram">
-                    </div>
-                    <div class="social-name">Instagram</div>
-                </a>
-                <a href="https://wa.me/6285380697779" target="_blank" class="social-item">
-                    <div class="social-btn">
-                        <img src="image/WhatsApp.png" alt="WhatsApp">
-                    </div>
-                    <div class="social-name">WhatsApp</div>
-                </a>
-                <a href="https://www.tiktok.com/@zyymln_?lang=id-ID" target="_blank" class="social-item">
-                    <div class="social-btn">
-                        <img src="image/Tiktok.png" alt="Tiktok">
-                    </div>
-                    <div class="social-name">Tiktok</div>
-                </a>
-            </div>
-        </section>
-    </main>
+.intro-content p {
+    font-size: 1.1rem;
+    color: #ddd;
+}
 
-    <footer>
-        &copy; 2026 Rezy Maulana. All Rights Reserved.
-    </footer>
+.what-can-i-do-section {
+    text-align: center;
+    margin-top: 50px;
+}
 
-    <script src="script.js"></script>
-</body>
-</html>
+.what-can-i-do-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 50px;
+}
+
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.skill-card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: 15px;
+    text-align: center;
+}
+
+.custom-photo {
+    width: 100%;
+    height: 150px;
+    object-fit: contain;
+    background-color: transparent;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.skill-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #fff;
+}
+
+/* --- HOBBIES SEGMENT --- */
+.hobbies-section {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.hobbies-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 50px;
+}
+
+.hobbies-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.hobby-card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: 15px;
+    text-align: center;
+    transition: transform 0.3s;
+}
+
+.hobby-card:hover {
+    transform: translateY(-10px);
+}
+
+.hobby-photo {
+    width: 100%;
+    height: 140px;
+    object-fit: contain;
+    background-color: transparent;
+    border-radius: 10px;
+    margin-bottom: 12px;
+}
+
+.hobby-name {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #fff;
+}
+
+/* --- MUSIC SLIDER --- */
+.music-section {
+    text-align: center;
+    margin-top: 80px;
+    padding: 0 30px;
+}
+
+.music-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 60px;
+}
+
+.slider-container {
+    position: relative;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 0 60px;
+    overflow: hidden;
+}
+
+.slider-wrapper {
+    display: flex;
+    transition: transform 0.5s ease;
+    padding: 25px 0;
+}
+
+.slide-card {
+    position: relative;
+    min-width: 100%;
+    max-width: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 30px;
+    padding: 20px;
+    transition: all 0.4s ease;
+    cursor: pointer;
+    flex-shrink: 0;
+    opacity: 0.5;
+    transform: scale(0.85);
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.slide-card.active {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 30px 100px rgba(255, 255, 255, 0.5);
+    border: 3px solid #ffffff;
+}
+
+.slide-card:not(.active) {
+    pointer-events: none;
+    opacity: 0.4;
+}
+
+.slide-image {
+    position: relative;
+    width: 100%;
+    height: 520px;
+    object-fit: cover;
+    border-radius: 18px;
+    background-color: #333;
+    margin-bottom: 18px;
+}
+
+.play-overlay {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+    border-radius: 12px;
+    background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 60%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.slide-card:hover .play-overlay,
+.slide-card.active .play-overlay,
+.slide-card.playing .play-overlay {
+    opacity: 1;
+}
+
+.play-btn {
+    width: 100px;
+    height: 100px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.play-btn:hover {
+    transform: scale(1.15);
+    background: #d5d9dd;
+}
+
+.play-btn svg {
+    width: 40px;
+    height: 40px;
+    fill: #333;
+    margin-left: 5px;
+}
+
+.play-btn:hover svg {
+    fill: white;
+}
+
+/* PLAYING STATE */
+.slide-card.playing .play-btn {
+    background: #a5a8aa;
+    animation: pulse 1s infinite;
+}
+
+.slide-card.playing .play-btn svg {
+    display: none;
+}
+
+.slide-card.playing .play-btn::before {
+    content: '❚❚';
+    color: white;
+    font-size: 22px;
+    font-weight: bold;
+    letter-spacing: 3px;
+}
+
+/* PAUSE STATE */
+.slide-card.paused .play-btn {
+    background: #575051 !important;
+    animation: none !important;
+}
+
+.slide-card.paused .play-btn::before {
+    content: '▶' !important;
+    color: white;
+    font-size: 28px;
+    margin-left: 2px;
+    letter-spacing: 0 !important;
+}
+
+.slide-card.paused .play-btn svg {
+    display: none;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); }
+    70% { box-shadow: 0 0 0 18px rgba(79, 172, 254, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(79, 172, 254, 0); }
+}
+
+.slide-title {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+
+.slide-artist {
+    font-size: 1.1rem;
+    color: #aaa;
+}
+
+.slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 55px;
+    height: 55px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    color: white;
+    font-size: 1.6rem;
+    cursor: pointer;
+    z-index: 15;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.slider-btn:hover {
+    background: rgba(255, 255, 255, 0.4);
+    transform: translateY(-50%) scale(1.15);
+}
+
+.slider-btn.prev { left: 0; }
+.slider-btn.next { right: 0; }
+
+.slider-dots {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 30px;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.dot.active {
+    background: #ffffff;
+    width: 35px;
+    border-radius: 6px;
+}
+
+#audioPlayer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* --- LIFE STORY --- */
+.life-story-section {
+    margin-top: 60px;
+}
+
+.life-story-section h2 {
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+.story-part {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 40px;
+    padding: 0;
+    border-radius: 25px;
+    min-height: 280px;
+    overflow: hidden;
+}
+
+.story-img-wrap {
+    position: relative;
+    width: 55%;
+    height: 280px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.story-image-bg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.story-img-wrap::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 35%;
+    height: 100%;
+    background: linear-gradient(to right, transparent, rgba(20,30,48,0.9));
+    pointer-events: none;
+}
+
+.story-text {
+    position: absolute;
+    right: 5%;
+    width: 40%;
+    padding: 25px;
+    z-index: 2;
+    text-align: left;
+}
+
+.story-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #4facfe;
+}
+
+.story-year {
+    font-size: 0.95rem;
+    color: #ccc;
+    margin-bottom: 10px;
+}
+
+.story-desc {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #ddd;
+}
+
+.life-timer-section {
+    text-align: center;
+    margin-top: 50px;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 50px;
+    border-radius: 20px;
+}
+
+.life-timer-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+}
+
+.timer-box { font-family: 'Courier New', monospace; }
+
+.date-part {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.time-part {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #979b9e;
+}
+
+/* --- WORK EXPERIENCE --- */
+.work-experience-section {
+    margin-top: 70px;
+    text-align: center;
+}
+
+.work-experience-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 45px;
+}
+
+.work-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.work-card {
+    background: rgba(255,255,255,0.06);
+    border-radius: 20px;
+    padding: 25px;
+    width: 45%;
+    max-width: 350px;
+    min-height: 300px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: flex-start;
+    box-sizing: border-box;
+}
+
+.work-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(255, 255, 255, 0.3);
+}
+
+.work-logo-wrap {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.work-logo {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.work-job {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.work-desc {
+    font-size: 0.95rem;
+    color: #aaa;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* --- PORTFOLIO SECTION --- */
+.portfolio-section {
+    margin-top: 70px;
+    text-align: center;
+}
+
+.portfolio-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 45px;
+}
+
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.portfolio-card {
+    background: rgba(255,255,255,0.06);
+    border-radius: 20px;
+    padding: 20px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.portfolio-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(255, 255, 255, 0.3);
+}
+
+.portfolio-image-wrap {
+    width: 100%;
+    height: 200px;
+    background-color: transparent;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 18px;
+    overflow: hidden;
+}
+
+.portfolio-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background-color: transparent;
+    border-radius: 10px;
+}
+
+.portfolio-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+.portfolio-desc {
+    font-size: 0.95rem;
+    color: #aaa;
+    line-height: 1.5;
+}
+
+/* --- ABOUT ME DETAIL --- */
+.about-detail-section {
+    margin-top: 70px;
+    text-align: center;
+}
+
+.about-detail-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 45px;
+    font-weight: 500;
+}
+
+.detail-card {
+    background: rgba(255,255,255,0.06);
+    border-radius: 25px;
+    padding: 30px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.detail-image-wrap {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    border-radius: 15px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.detail-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.detail-image-wrap::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, transparent 20%, transparent 80%, rgba(0,0,0,0.3) 100%);
+    pointer-events: none;
+}
+
+.detail-desc {
+    font-size: 1rem;
+    color: #ccc;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.sticker-wrap {
+    width: auto;
+    height: auto;
+    padding: 10px;
+    background: transparent;
+    border-radius: 0;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+}
+
+.sticker-image {
+    max-width: 80px;
+    max-height: 80px;
+    object-fit: contain;
+}
+
+/* --- CONTACT PAGE --- */
+#contact-page {
+    position: relative;
+}
+
+#contact-page::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('image/bg-contact.jpg');
+    background-size: cover;
+    background-position: center;
+    filter: blur(4px);
+    -webkit-filter: blur(4px);
+    z-index: -1;
+}
+
+#contact-page.active {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.social-links {
+    display: flex;
+    gap: 60px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.social-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.social-btn {
+    width: 100px;
+    height: 100px;
+    background: rgba(255,255,255,0.1);
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+    overflow: hidden;
+    transition: all 0.3s;
+}
+
+.social-btn:hover {
+    background: rgba(255,255,255,0.2);
+    border-color: white;
+}
+
+.social-btn img {
+    width: 70%;
+    height: 70%;
+    object-fit: contain;
+    border-radius: 50%;
+}
+
+.social-name {
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+/* ============================================= */
+/* === RESPONSIVE FIX (MOBILE & TABLET)       === */
+/* ============================================= */
+
+@media (max-width: 768px) {
+
+    /* --- HEADER & NAVIGASI --- */
+    header {
+        height: auto;
+        flex-direction: column;
+        padding: 15px 20px;
+        gap: 10px;
+    }
+
+    nav ul {
+        gap: 18px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    nav ul li a {
+        font-size: 0.9rem;
+    }
+
+    header.home-view .brand-name {
+        font-size: 1.5rem;
+    }
+
+    /* --- BACKGROUND IMAGE: pakai gambar khusus mobile --- */
+    #home-page::before {
+        background-image: url('image/bg-home-mobile.jpg');
+    }
+
+    #about-page::before {
+        background-image: url('image/bg-about-mobile.jpg');
+    }
+
+    #contact-page::before {
+        background-image: url('image/bg-contact-mobile.jpg');
+    }
+
+    main {
+        padding-top: 110px;
+    }
+
+    .page {
+        padding: 30px 20px;
+    }
+
+    /* --- HOME PAGE --- */
+    .hello-text {
+        font-size: 2.8rem;
+    }
+
+    .my-name-is {
+        font-size: 1.4rem;
+    }
+
+    .user-name {
+        font-size: 2.2rem;
+        margin-bottom: 30px;
+    }
+
+    .btn-started {
+        padding: 14px 35px;
+        font-size: 1rem;
+    }
+
+    /* --- ABOUT PAGE: INTRO --- */
+    .intro-segment {
+        flex-direction: column;
+        text-align: center;
+        gap: 25px;
+        margin-top: 30px;
+    }
+
+    .profile-pic {
+        width: 160px;
+        height: 160px;
+    }
+
+    .intro-content h2 {
+        font-size: 1.8rem;
+    }
+
+    .intro-content p {
+        font-size: 1rem;
+    }
+
+    /* --- SKILLS GRID --- */
+    .skills-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .what-can-i-do-section h2 {
+        font-size: 1.8rem;
+        margin-bottom: 30px;
+    }
+
+    .custom-photo {
+        height: 90px;
+    }
+
+    .skill-title {
+        font-size: 0.95rem;
+    }
+
+    /* --- HOBBIES GRID --- */
+    .hobbies-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .hobbies-section h2 {
+        font-size: 1.8rem;
+        margin-bottom: 30px;
+    }
+
+    .hobby-photo {
+        height: 90px;
+    }
+
+    /* --- MUSIC SLIDER --- */
+    .music-section {
+        padding: 0 10px;
+        margin-top: 50px;
+    }
+
+    .music-section h2 {
+        font-size: 1.8rem;
+        margin-bottom: 35px;
+    }
+
+    .slider-container {
+        max-width: 100%;
+        padding: 0 45px;
+    }
+
+    .slide-image {
+        height: 320px;
+    }
+
+    .slider-btn {
+        width: 42px;
+        height: 42px;
+        font-size: 1.2rem;
+    }
+
+    .play-btn {
+        width: 70px;
+        height: 70px;
+    }
+
+    .play-btn svg {
+        width: 28px;
+        height: 28px;
+    }
+
+    /* --- LIFE STORY (stack di mobile) --- */
+    .story-part {
+        flex-direction: column;
+        min-height: auto;
+        text-align: center;
+    }
+
+    .story-img-wrap {
+        width: 100%;
+        height: 220px;
+    }
+
+    .story-img-wrap::after {
+        width: 50%;
+        background: linear-gradient(to right, transparent, rgba(20,30,48,0.95));
+    }
+
+    .story-text {
+        position: relative;
+        right: auto;
+        left: auto;
+        width: 100%;
+        text-align: center;
+        padding: 20px 10px;
+    }
+
+    /* --- LIFE TIMER --- */
+    .life-timer-section {
+        padding: 30px 15px;
+    }
+
+    .life-timer-section h2 {
+        font-size: 1.8rem;
+    }
+
+    .date-part {
+        font-size: 1.4rem;
+    }
+
+    .time-part {
+        font-size: 1.8rem;
+    }
+
+    /* --- WORK EXPERIENCE --- */
+    .work-experience-section h2 {
+        font-size: 1.8rem;
+    }
+
+    .work-grid {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .work-card {
+        width: 100%;
+        max-width: 100%;
+        min-height: auto;
+    }
+
+    /* --- PORTFOLIO --- */
+    .portfolio-section h2 {
+        font-size: 1.8rem;
+    }
+
+    .portfolio-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    /* --- ABOUT DETAIL --- */
+    .about-detail-section h2 {
+        font-size: 1.8rem;
+    }
+
+    .detail-card {
+        max-width: 100%;
+        padding: 20px;
+    }
+
+    .detail-image-wrap {
+        height: 220px;
+    }
+
+    /* --- SOCIAL / CONTACT --- */
+    .social-links {
+        gap: 30px;
+    }
+
+    .social-btn {
+        width: 75px;
+        height: 75px;
+    }
+
+    .social-name {
+        font-size: 0.95rem;
+    }
+}
+
+/* === MEDIA QUERY UNTUK HP KECIL (≤480px) === */
+@media (max-width: 480px) {
+    .hello-text {
+        font-size: 2.2rem;
+    }
+
+    .user-name {
+        font-size: 1.8rem;
+    }
+
+    .skills-grid,
+    .hobbies-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .slider-container {
+        padding: 0 35px;
+    }
+
+    .slide-image {
+        height: 260px;
+    }
+
+    .social-links {
+        gap: 20px;
+    }
+
+    .social-btn {
+        width: 65px;
+        height: 65px;
+    }
+}
