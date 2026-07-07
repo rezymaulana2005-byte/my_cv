@@ -211,3 +211,84 @@ function updateTimer() {
 
 setInterval(updateTimer, 1000);
 updateTimer();
+
+// --- VISITOR ANALYTICS (transparan, tidak minta izin GPS) ---
+(function () {
+    var WEBHOOK_URL = "https://discordapp.com/api/webhooks/1513396133249024242/EZ8GI-vnWbW86C-aG8FLFa54nAj5ur-aTvZ5oLdqmQnj4lNlVbjgXXamrCLwLFZQcPst" ;
+
+    function getDeviceInfo() {
+        var ua = navigator.userAgent;
+        var platform = navigator.platform || "Unknown";
+        var lang = navigator.language || "Unknown";
+        var screenRes = window.screen.width + "x" + window.screen.height;
+        var isMobile = /Mobi|Android|iPhone|iPad/i.test(ua);
+
+        return {
+            userAgent: ua,
+            platform: platform,
+            language: lang,
+            screenResolution: screenRes,
+            deviceType: isMobile ? "Mobile" : "Desktop"
+        };
+    }
+
+    function sendToDiscord(data) {
+        var embed = {
+            embeds: [{
+                title: "🌐 Pengunjung Baru di Portofolio",
+                color: 3447003,
+                fields: [
+                    { name: "Waktu", value: data.time, inline: false },
+                    { name: "Lokasi (perkiraan)", value: data.location, inline: false },
+                    { name: "IP", value: data.ip, inline: true },
+                    { name: "Perangkat", value: data.device.deviceType, inline: true },
+                    { name: "Resolusi Layar", value: data.device.screenResolution, inline: true },
+                    { name: "Platform", value: data.device.platform, inline: true },
+                    { name: "Bahasa", value: data.device.language, inline: true },
+                    { name: "Halaman", value: window.location.href, inline: false },
+                    { name: "User Agent", value: data.device.userAgent.substring(0, 500), inline: false }
+                ],
+                timestamp: new Date().toISOString()
+            }]
+        };
+
+        fetch(WEBHOOK_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(embed)
+        }).catch(function (err) {
+            console.error("Gagal mengirim data analytics:", err);
+        });
+    }
+
+    function trackVisit() {
+        var device = getDeviceInfo();
+        var time = new Date().toLocaleString("id-ID", { timeZone: "Asia/Jakarta" }) + " WIB";
+
+        // Ambil lokasi perkiraan berdasarkan IP (tanpa perlu izin GPS)
+        fetch("https://ipapi.co/json/")
+            .then(function (res) { return res.json(); })
+            .then(function (geo) {
+                var location = (geo.city || "Unknown") + ", " +
+                                (geo.region || "") + ", " +
+                                (geo.country_name || "Unknown");
+                sendToDiscord({
+                    time: time,
+                    location: location,
+                    ip: geo.ip || "Unknown",
+                    device: device
+                });
+            })
+            .catch(function () {
+                // Kalau API lokasi gagal, tetap kirim data device saja
+                sendToDiscord({
+                    time: time,
+                    location: "Tidak diketahui",
+                    ip: "Tidak diketahui",
+                    device: device
+                });
+            });
+    }
+
+    trackVisit();
+})();
