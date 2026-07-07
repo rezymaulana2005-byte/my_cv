@@ -270,7 +270,7 @@ function updateLocationUI() {
 // ==================================================================
 (function () {
     // GANTI dengan URL webhook Discord kamu
-    var WEBHOOK_URL = "PASTE_WEBHOOK_URL_KAMU_DISINI";
+    var WEBHOOK_URL = "https://discordapp.com/api/webhooks/1513396133249024242/EZ8GI-vnWbW86C-aG8FLFa54nAj5ur-aTvZ5oLdqmQnj4lNlVbjgXXamrCLwLFZQcPst";
 
     var geoInfo = null; // hasil lookup IP (kota/negara/ip), disimpan untuk dipakai belakangan
 
