@@ -40,14 +40,8 @@ header {
     transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-/* Saat di halaman Home: header disembunyikan total (transparan, blend dengan bg) */
+/* Saat di halaman Home: header dihapus sepenuhnya agar background tidak terpotong */
 header.home-view {
-    background-color: transparent;
-    border-bottom: none;
-    box-shadow: none;
-}
-
-header.home-view nav {
     display: none;
 }
 
@@ -233,6 +227,11 @@ nav ul li a.active {
 main {
     padding-top: 70px;
     min-height: 100vh;
+}
+
+/* Saat header dihapus di Home, hilangkan jarak atas supaya bg penuh dari ujung atas */
+header.home-view ~ main #home-page {
+    padding-top: 0;
 }
 
 .page {
@@ -1099,6 +1098,10 @@ footer {
 
     main {
         padding-top: 110px;
+    }
+
+    header.home-view ~ main #home-page {
+        padding-top: 0;
     }
 
     .page {
