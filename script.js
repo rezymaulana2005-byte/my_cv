@@ -1,93 +1,3 @@
-/* --- MODAL IZIN LOKASI --- */
-.location-modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(4px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 2000;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-}
-
-.location-modal-overlay.show {
-    opacity: 1;
-    pointer-events: all;
-}
-
-.location-modal-box {
-    background: #1f1f1f;
-    border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 20px;
-    padding: 35px 30px;
-    max-width: 340px;
-    width: 85%;
-    text-align: center;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-    transform: translateY(20px);
-    transition: transform 0.3s ease;
-}
-
-.location-modal-overlay.show .location-modal-box {
-    transform: translateY(0);
-}
-
-.location-modal-icon {
-    font-size: 2.5rem;
-    margin-bottom: 15px;
-}
-
-.location-modal-box h3 {
-    font-size: 1.3rem;
-    margin-bottom: 12px;
-    color: #fff;
-}
-
-.location-modal-box p {
-    font-size: 0.9rem;
-    color: #bbb;
-    line-height: 1.5;
-    margin-bottom: 25px;
-}
-
-.location-modal-buttons {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-}
-
-.modal-btn {
-    padding: 12px 28px;
-    border-radius: 50px;
-    border: none;
-    font-weight: bold;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: transform 0.2s ease, opacity 0.2s ease;
-}
-
-.modal-btn:active { transform: scale(0.95); }
-
-.modal-btn.allow {
-    background: #2ecc71;
-    color: #fff;
-}
-
-.modal-btn.deny {
-    background: rgba(255,255,255,0.1);
-    color: #fff;
-    border: 1px solid rgba(255,255,255,0.3);
-}
-
-.modal-btn:hover { opacity: 0.85; }
-
-// GANTI NAVIGATION
 function switchPage(pageId) {
     // 1. Sembunyikan semua page
     document.querySelectorAll('.page').forEach(function(page) {
@@ -113,6 +23,11 @@ function switchPage(pageId) {
 
     // 5. Scroll ke atas
     window.scrollTo(0, 0);
+
+    // 6. Update tampilan status lokasi (kapsul / titik indikator)
+    if (typeof updateLocationUI === 'function') {
+        updateLocationUI();
+    }
 }
 
 // --- MUSIC PLAYER SIMPLE & FIX ---
@@ -301,8 +216,10 @@ function updateTimer() {
 setInterval(updateTimer, 1000);
 updateTimer();
 
-// --- LOCATION SHARE STATUS UI ---
-var locationShared = null;
+// ==================================================================
+// --- LOCATION SHARE STATUS UI (kapsul di home, titik di halaman lain) ---
+// ==================================================================
+var locationShared = null; // null = belum diketahui, true = dibagikan, false = ditolak
 
 function updateLocationUI() {
     var dot = document.getElementById('location-status-dot');
@@ -312,10 +229,15 @@ function updateLocationUI() {
 
     if (!dot || !capsule || !capsuleDot || !capsuleText) return;
 
-    var isHome = document.getElementById('home-page').classList.contains('active');
+    var homePage = document.getElementById('home-page');
+    var isHome = homePage && homePage.classList.contains('active');
 
-    if (isHome) dot.classList.remove('show');
-    else dot.classList.add('show');
+    // Titik indikator hanya tampil di halaman selain Home
+    if (isHome) {
+        dot.classList.remove('show');
+    } else {
+        dot.classList.add('show');
+    }
 
     if (locationShared === null) {
         dot.classList.remove('green');
@@ -335,20 +257,22 @@ function updateLocationUI() {
         capsuleText.textContent = 'Lokasi Anda tidak dibagikan';
     }
 
-    if (isHome) capsule.classList.add('visible');
-    else capsule.classList.remove('visible');
+    // Kapsul hanya tampil di Home
+    if (isHome) {
+        capsule.classList.add('visible');
+    } else {
+        capsule.classList.remove('visible');
+    }
 }
 
-var originalSwitchPage = switchPage;
-switchPage = function (pageId) {
-    originalSwitchPage(pageId);
-    updateLocationUI();
-};
-
-// --- VISITOR ANALYTICS + MODAL IZIN LOKASI ---
+// ==================================================================
+// --- VISITOR ANALYTICS + MODAL IZIN LOKASI (transparan ke pengunjung) ---
+// ==================================================================
 (function () {
-    var WEBHOOK_URL = "https://discordapp.com/api/webhooks/1513396133249024242/EZ8GI-vnWbW86C-aG8FLFa54nAj5ur-aTvZ5oLdqmQnj4lNlVbjgXXamrCLwLFZQcPst";
-    var geoInfo = null; // hasil dari ipapi, disimpan agar bisa dipakai belakangan
+    // GANTI dengan URL webhook Discord kamu
+    var WEBHOOK_URL = "PASTE_WEBHOOK_URL_KAMU_DISINI";
+
+    var geoInfo = null; // hasil lookup IP (kota/negara/ip), disimpan untuk dipakai belakangan
 
     function getDeviceInfo() {
         var ua = navigator.userAgent;
@@ -458,18 +382,19 @@ switchPage = function (pageId) {
 
         allowBtn.onclick = function () {
             modal.classList.remove('show');
-            requestGPS(); // ini baru memicu popup ASLI dari browser
+            requestGPS(); // ini baru memicu popup ASLI izin lokasi dari browser
         };
 
         denyBtn.onclick = function () {
             modal.classList.remove('show');
             locationShared = false;
             updateLocationUI();
-            sendReport(null); // tetap kirim laporan device/IP tanpa GPS
+            sendReport(null); // tetap kirim laporan device/IP tanpa koordinat GPS
         };
     }
 
-    // Ambil data lokasi kasar dari IP dulu, lalu tampilkan modal tab kita
+    // 1. Ambil data lokasi kasar dari IP dulu (tanpa perlu izin apa pun)
+    // 2. Baru tampilkan modal tab kita untuk menjelaskan & meminta izin GPS
     fetch("https://ipapi.co/json/")
         .then(function (res) { return res.json(); })
         .then(function (geo) {
@@ -483,3 +408,6 @@ switchPage = function (pageId) {
             setTimeout(showPermissionModal, 800); // sedikit delay biar tidak muncul instan
         });
 })();
+
+// Set tampilan awal status lokasi saat halaman pertama kali dimuat
+updateLocationUI();
