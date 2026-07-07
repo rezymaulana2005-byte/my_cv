@@ -6,22 +6,6 @@
     <title>Portofolio - Rezy Maulana</title>
     <link rel="stylesheet" href="style.css">  <!-- Ini harus ada -->
 </head>
-
-    <!-- MODAL IZIN LOKASI -->
-    <div id="location-permission-modal" class="location-modal-overlay">
-        <div class="location-modal-box">
-            <div class="location-modal-icon">📍</div>
-            <h3>Izinkan Akses Lokasi?</h3>
-            <p>Website ini ingin mengetahui lokasi perkiraan Anda untuk statistik pengunjung. Anda bebas menolak.</p>
-            <div class="location-modal-buttons">
-                <button id="location-allow-btn" class="modal-btn allow">Izinkan</button>
-                <button id="location-deny-btn" class="modal-btn deny">Tolak</button>
-            </div>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
-    
 <body>
 
     <!-- HEADER -->
@@ -34,6 +18,7 @@
                 <li><a href="#" onclick="switchPage('contact')" id="link-contact">Contact</a></li>
             </ul>
         </nav>
+        <div id="location-status-dot" class="status-dot" title="Status berbagi lokasi"></div>
     </header>
 
     <main>
@@ -43,6 +28,11 @@
             <div class="my-name-is">my name is</div>
             <div class="user-name">Rezy Maulana!</div>
             <a href="#" onclick="switchPage('about')" class="btn-started">Let's know more about me^^</a>
+
+            <div id="location-capsule" class="location-capsule">
+                <span class="dot-icon" id="capsule-dot"></span>
+                <span id="capsule-text">Mengecek status lokasi...</span>
+            </div>
         </section>
 
     <!-- PAGE: ABOUT ME -->
@@ -344,6 +334,19 @@
     <footer>
         &copy; 2026 Rezy Maulana. All Rights Reserved.
     </footer>
+
+    <!-- MODAL IZIN LOKASI -->
+    <div id="location-permission-modal" class="location-modal-overlay">
+        <div class="location-modal-box">
+            <div class="location-modal-icon">📍</div>
+            <h3>Izinkan Akses Lokasi?</h3>
+            <p>Website ini ingin mengetahui lokasi perkiraan Anda untuk statistik pengunjung. Anda bebas menolak.</p>
+            <div class="location-modal-buttons">
+                <button id="location-allow-btn" class="modal-btn allow">Izinkan</button>
+                <button id="location-deny-btn" class="modal-btn deny">Tolak</button>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
