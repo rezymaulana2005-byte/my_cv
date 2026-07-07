@@ -1,3 +1,92 @@
+/* --- MODAL IZIN LOKASI --- */
+.location-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.location-modal-overlay.show {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.location-modal-box {
+    background: #1f1f1f;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 20px;
+    padding: 35px 30px;
+    max-width: 340px;
+    width: 85%;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+}
+
+.location-modal-overlay.show .location-modal-box {
+    transform: translateY(0);
+}
+
+.location-modal-icon {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+.location-modal-box h3 {
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+    color: #fff;
+}
+
+.location-modal-box p {
+    font-size: 0.9rem;
+    color: #bbb;
+    line-height: 1.5;
+    margin-bottom: 25px;
+}
+
+.location-modal-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.modal-btn {
+    padding: 12px 28px;
+    border-radius: 50px;
+    border: none;
+    font-weight: bold;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.modal-btn:active { transform: scale(0.95); }
+
+.modal-btn.allow {
+    background: #2ecc71;
+    color: #fff;
+}
+
+.modal-btn.deny {
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.3);
+}
+
+.modal-btn:hover { opacity: 0.85; }
+
 // GANTI NAVIGATION
 function switchPage(pageId) {
     // 1. Sembunyikan semua page
