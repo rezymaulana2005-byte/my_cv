@@ -32,32 +32,23 @@ header {
     height: 70px;
     background-color: rgba(0, 0, 0, 0.9);
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     padding: 0 50px;
     z-index: 1000;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-.brand-name {
-    font-family: 'Algerian', 'Copperplate', 'Trattatello', fantasy;
-    font-size: 1.4rem;
-    font-weight: 600;
-    letter-spacing: 1px;
-    transition: font-size 0.3s ease;
-}
-
-/* Saat di halaman Home: nav disembunyikan, judul tetap sejajar kiri seperti teks Hello */
+/* Saat di halaman Home: header disembunyikan total (transparan, blend dengan bg) */
 header.home-view {
-    justify-content: flex-start;
+    background-color: transparent;
+    border-bottom: none;
+    box-shadow: none;
 }
 
 header.home-view nav {
     display: none;
-}
-
-header.home-view .brand-name {
-    font-size: 1.8rem;
 }
 
 nav ul {
@@ -1069,15 +1060,8 @@ footer {
     /* --- HEADER & NAVIGASI --- */
     header {
         height: auto;
-        flex-direction: column;
-        align-items: flex-start;
+        justify-content: center;
         padding: 15px 20px;
-        gap: 10px;
-    }
-
-    .brand-name {
-        align-self: flex-start;
-        text-align: left;
     }
 
     nav {
@@ -1093,10 +1077,6 @@ footer {
 
     nav ul li a {
         font-size: 0.9rem;
-    }
-
-    header.home-view .brand-name {
-        font-size: 1.5rem;
     }
 
     .status-dot {
