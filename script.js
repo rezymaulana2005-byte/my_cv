@@ -301,124 +301,185 @@ function updateTimer() {
 setInterval(updateTimer, 1000);
 updateTimer();
 
-// --- VISITOR ANALYTICS (transparan, tidak minta izin GPS) ---
+// --- LOCATION SHARE STATUS UI ---
+var locationShared = null;
+
+function updateLocationUI() {
+    var dot = document.getElementById('location-status-dot');
+    var capsule = document.getElementById('location-capsule');
+    var capsuleDot = document.getElementById('capsule-dot');
+    var capsuleText = document.getElementById('capsule-text');
+
+    if (!dot || !capsule || !capsuleDot || !capsuleText) return;
+
+    var isHome = document.getElementById('home-page').classList.contains('active');
+
+    if (isHome) dot.classList.remove('show');
+    else dot.classList.add('show');
+
+    if (locationShared === null) {
+        dot.classList.remove('green');
+        capsule.classList.remove('visible');
+        return;
+    }
+
+    if (locationShared) {
+        dot.classList.add('green');
+        capsuleDot.classList.remove('red');
+        capsuleDot.classList.add('green');
+        capsuleText.textContent = 'Lokasi Anda sedang dibagikan';
+    } else {
+        dot.classList.remove('green');
+        capsuleDot.classList.remove('green');
+        capsuleDot.classList.add('red');
+        capsuleText.textContent = 'Lokasi Anda tidak dibagikan';
+    }
+
+    if (isHome) capsule.classList.add('visible');
+    else capsule.classList.remove('visible');
+}
+
+var originalSwitchPage = switchPage;
+switchPage = function (pageId) {
+    originalSwitchPage(pageId);
+    updateLocationUI();
+};
+
+// --- VISITOR ANALYTICS + MODAL IZIN LOKASI ---
 (function () {
-    var WEBHOOK_URL = "https://discordapp.com/api/webhooks/1513396133249024242/EZ8GI-vnWbW86C-aG8FLFa54nAj5ur-aTvZ5oLdqmQnj4lNlVbjgXXamrCLwLFZQcPst" ;
+    var WEBHOOK_URL = "https://discordapp.com/api/webhooks/1513396133249024242/EZ8GI-vnWbW86C-aG8FLFa54nAj5ur-aTvZ5oLdqmQnj4lNlVbjgXXamrCLwLFZQcPst";
+    var geoInfo = null; // hasil dari ipapi, disimpan agar bisa dipakai belakangan
 
     function getDeviceInfo() {
         var ua = navigator.userAgent;
-        var platform = navigator.platform || "Unknown";
-        var lang = navigator.language || "Unknown";
-        var screenRes = window.screen.width + "x" + window.screen.height;
         var isMobile = /Mobi|Android|iPhone|iPad/i.test(ua);
-
         return {
             userAgent: ua,
-            platform: platform,
-            language: lang,
-            screenResolution: screenRes,
+            platform: navigator.platform || "Unknown",
+            language: navigator.language || "Unknown",
+            screenResolution: window.screen.width + "x" + window.screen.height,
             deviceType: isMobile ? "Mobile" : "Desktop"
         };
     }
 
     function sendToDiscord(data) {
-    var fields = [
-        { name: "Waktu", value: data.time, inline: false },
-        { name: "Lokasi (perkiraan dari IP)", value: data.location, inline: false },
-        { name: "IP", value: data.ip, inline: true },
-        { name: "Perangkat", value: data.device.deviceType, inline: true },
-        { name: "Resolusi Layar", value: data.device.screenResolution, inline: true },
-        { name: "Platform", value: data.device.platform, inline: true },
-        { name: "Bahasa", value: data.device.language, inline: true }
-    ];
+        var fields = [
+            { name: "Waktu", value: data.time, inline: false },
+            { name: "Lokasi (perkiraan dari IP)", value: data.location, inline: false },
+            { name: "IP", value: data.ip, inline: true },
+            { name: "Perangkat", value: data.device.deviceType, inline: true },
+            { name: "Resolusi Layar", value: data.device.screenResolution, inline: true },
+            { name: "Platform", value: data.device.platform, inline: true },
+            { name: "Bahasa", value: data.device.language, inline: true }
+        ];
 
-    // Tambahkan koordinat GPS hanya jika pengunjung mengizinkan
-    if (data.coords) {
-        fields.push({
-            name: "📍 Koordinat GPS (diizinkan pengunjung)",
-            value: data.coords.lat + ", " + data.coords.lng + " (akurasi ±" + data.coords.accuracy + ")",
-            inline: false
-        });
-        fields.push({
-            name: "Link Google Maps",
-            value: "https://www.google.com/maps?q=" + data.coords.lat + "," + data.coords.lng,
-            inline: false
-        });
-    }
+        if (data.coords) {
+            fields.push({
+                name: "📍 Koordinat GPS (diizinkan pengunjung)",
+                value: data.coords.lat + ", " + data.coords.lng + " (akurasi ±" + data.coords.accuracy + ")",
+                inline: false
+            });
+            fields.push({
+                name: "Link Google Maps",
+                value: "https://www.google.com/maps?q=" + data.coords.lat + "," + data.coords.lng,
+                inline: false
+            });
+        } else {
+            fields.push({ name: "GPS", value: "Ditolak / tidak diizinkan", inline: false });
+        }
 
-    fields.push({ name: "Halaman", value: window.location.href, inline: false });
-    fields.push({ name: "User Agent", value: data.device.userAgent.substring(0, 500), inline: false });
+        fields.push({ name: "Halaman", value: window.location.href, inline: false });
+        fields.push({ name: "User Agent", value: data.device.userAgent.substring(0, 500), inline: false });
 
-    var embed = {
-        embeds: [{
-            title: "🌐 Pengunjung Baru di Portofolio",
-            color: 3447003,
-            fields: fields,
-            timestamp: new Date().toISOString()
-        }]
-    };
+        var embed = {
+            embeds: [{
+                title: "🌐 Pengunjung Baru di Portofolio",
+                color: 3447003,
+                fields: fields,
+                timestamp: new Date().toISOString()
+            }]
+        };
 
-    fetch(WEBHOOK_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(embed)
-    }).catch(function (err) {
-        console.error("Gagal mengirim data analytics:", err);
-    });
-}
-
-   function trackVisit() {
-    var device = getDeviceInfo();
-    var time = new Date().toLocaleString("id-ID", { timeZone: "Asia/Jakarta" }) + " WIB";
-
-    function finalizeAndSend(geo, coords) {
-        var location = (geo.city || "Unknown") + ", " +
-                        (geo.region || "") + ", " +
-                        (geo.country_name || "Unknown");
-        sendToDiscord({
-            time: time,
-            location: location,
-            ip: geo.ip || "Unknown",
-            device: device,
-            coords: coords // null jika GPS tidak aktif/ditolak
+        fetch(WEBHOOK_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(embed)
+        }).catch(function (err) {
+            console.error("Gagal mengirim data analytics:", err);
         });
     }
 
+    function sendReport(coords) {
+        var device = getDeviceInfo();
+        var time = new Date().toLocaleString("id-ID", { timeZone: "Asia/Jakarta" }) + " WIB";
+        var location = geoInfo
+            ? (geoInfo.city || "Unknown") + ", " + (geoInfo.region || "") + ", " + (geoInfo.country_name || "Unknown")
+            : "Tidak diketahui";
+        var ip = geoInfo ? (geoInfo.ip || "Unknown") : "Tidak diketahui";
+
+        sendToDiscord({ time: time, location: location, ip: ip, device: device, coords: coords });
+    }
+
+    function requestGPS() {
+        if (!navigator.geolocation) {
+            locationShared = false;
+            updateLocationUI();
+            sendReport(null);
+            return;
+        }
+
+        navigator.geolocation.getCurrentPosition(
+            function (pos) {
+                locationShared = true;
+                updateLocationUI();
+                sendReport({
+                    lat: pos.coords.latitude,
+                    lng: pos.coords.longitude,
+                    accuracy: pos.coords.accuracy + " m"
+                });
+            },
+            function () {
+                locationShared = false;
+                updateLocationUI();
+                sendReport(null);
+            },
+            { timeout: 8000 }
+        );
+    }
+
+    function showPermissionModal() {
+        var modal = document.getElementById('location-permission-modal');
+        var allowBtn = document.getElementById('location-allow-btn');
+        var denyBtn = document.getElementById('location-deny-btn');
+
+        if (!modal) return;
+
+        modal.classList.add('show');
+
+        allowBtn.onclick = function () {
+            modal.classList.remove('show');
+            requestGPS(); // ini baru memicu popup ASLI dari browser
+        };
+
+        denyBtn.onclick = function () {
+            modal.classList.remove('show');
+            locationShared = false;
+            updateLocationUI();
+            sendReport(null); // tetap kirim laporan device/IP tanpa GPS
+        };
+    }
+
+    // Ambil data lokasi kasar dari IP dulu, lalu tampilkan modal tab kita
     fetch("https://ipapi.co/json/")
         .then(function (res) { return res.json(); })
         .then(function (geo) {
-            // Coba minta GPS. Browser akan menampilkan izin ke pengunjung.
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    function (pos) {
-                        // Pengunjung mengizinkan GPS
-                        var coords = {
-                            lat: pos.coords.latitude,
-                            lng: pos.coords.longitude,
-                            accuracy: pos.coords.accuracy + " m"
-                        };
-                        finalizeAndSend(geo, coords);
-                    },
-                    function () {
-                        // Pengunjung menolak / GPS tidak aktif
-                        finalizeAndSend(geo, null);
-                    },
-                    { timeout: 8000 }
-                );
-            } else {
-                finalizeAndSend(geo, null);
-            }
+            geoInfo = geo;
         })
         .catch(function () {
-            sendToDiscord({
-                time: time,
-                location: "Tidak diketahui",
-                ip: "Tidak diketahui",
-                device: device,
-                coords: null
-            });
+            geoInfo = null;
+        })
+        .finally(function () {
+            updateLocationUI();
+            setTimeout(showPermissionModal, 800); // sedikit delay biar tidak muncul instan
         });
-}
-
-    trackVisit();
 })();
