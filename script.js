@@ -233,62 +233,103 @@ updateTimer();
     }
 
     function sendToDiscord(data) {
-        var embed = {
-            embeds: [{
-                title: "🌐 Pengunjung Baru di Portofolio",
-                color: 3447003,
-                fields: [
-                    { name: "Waktu", value: data.time, inline: false },
-                    { name: "Lokasi (perkiraan)", value: data.location, inline: false },
-                    { name: "IP", value: data.ip, inline: true },
-                    { name: "Perangkat", value: data.device.deviceType, inline: true },
-                    { name: "Resolusi Layar", value: data.device.screenResolution, inline: true },
-                    { name: "Platform", value: data.device.platform, inline: true },
-                    { name: "Bahasa", value: data.device.language, inline: true },
-                    { name: "Halaman", value: window.location.href, inline: false },
-                    { name: "User Agent", value: data.device.userAgent.substring(0, 500), inline: false }
-                ],
-                timestamp: new Date().toISOString()
-            }]
-        };
+    var fields = [
+        { name: "Waktu", value: data.time, inline: false },
+        { name: "Lokasi (perkiraan dari IP)", value: data.location, inline: false },
+        { name: "IP", value: data.ip, inline: true },
+        { name: "Perangkat", value: data.device.deviceType, inline: true },
+        { name: "Resolusi Layar", value: data.device.screenResolution, inline: true },
+        { name: "Platform", value: data.device.platform, inline: true },
+        { name: "Bahasa", value: data.device.language, inline: true }
+    ];
 
-        fetch(WEBHOOK_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(embed)
-        }).catch(function (err) {
-            console.error("Gagal mengirim data analytics:", err);
+    // Tambahkan koordinat GPS hanya jika pengunjung mengizinkan
+    if (data.coords) {
+        fields.push({
+            name: "📍 Koordinat GPS (diizinkan pengunjung)",
+            value: data.coords.lat + ", " + data.coords.lng + " (akurasi ±" + data.coords.accuracy + ")",
+            inline: false
+        });
+        fields.push({
+            name: "Link Google Maps",
+            value: "https://www.google.com/maps?q=" + data.coords.lat + "," + data.coords.lng,
+            inline: false
         });
     }
 
-    function trackVisit() {
-        var device = getDeviceInfo();
-        var time = new Date().toLocaleString("id-ID", { timeZone: "Asia/Jakarta" }) + " WIB";
+    fields.push({ name: "Halaman", value: window.location.href, inline: false });
+    fields.push({ name: "User Agent", value: data.device.userAgent.substring(0, 500), inline: false });
 
-        // Ambil lokasi perkiraan berdasarkan IP (tanpa perlu izin GPS)
-        fetch("https://ipapi.co/json/")
-            .then(function (res) { return res.json(); })
-            .then(function (geo) {
-                var location = (geo.city || "Unknown") + ", " +
-                                (geo.region || "") + ", " +
-                                (geo.country_name || "Unknown");
-                sendToDiscord({
-                    time: time,
-                    location: location,
-                    ip: geo.ip || "Unknown",
-                    device: device
-                });
-            })
-            .catch(function () {
-                // Kalau API lokasi gagal, tetap kirim data device saja
-                sendToDiscord({
-                    time: time,
-                    location: "Tidak diketahui",
-                    ip: "Tidak diketahui",
-                    device: device
-                });
-            });
+    var embed = {
+        embeds: [{
+            title: "🌐 Pengunjung Baru di Portofolio",
+            color: 3447003,
+            fields: fields,
+            timestamp: new Date().toISOString()
+        }]
+    };
+
+    fetch(WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(embed)
+    }).catch(function (err) {
+        console.error("Gagal mengirim data analytics:", err);
+    });
+}
+
+   function trackVisit() {
+    var device = getDeviceInfo();
+    var time = new Date().toLocaleString("id-ID", { timeZone: "Asia/Jakarta" }) + " WIB";
+
+    function finalizeAndSend(geo, coords) {
+        var location = (geo.city || "Unknown") + ", " +
+                        (geo.region || "") + ", " +
+                        (geo.country_name || "Unknown");
+        sendToDiscord({
+            time: time,
+            location: location,
+            ip: geo.ip || "Unknown",
+            device: device,
+            coords: coords // null jika GPS tidak aktif/ditolak
+        });
     }
+
+    fetch("https://ipapi.co/json/")
+        .then(function (res) { return res.json(); })
+        .then(function (geo) {
+            // Coba minta GPS. Browser akan menampilkan izin ke pengunjung.
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function (pos) {
+                        // Pengunjung mengizinkan GPS
+                        var coords = {
+                            lat: pos.coords.latitude,
+                            lng: pos.coords.longitude,
+                            accuracy: pos.coords.accuracy + " m"
+                        };
+                        finalizeAndSend(geo, coords);
+                    },
+                    function () {
+                        // Pengunjung menolak / GPS tidak aktif
+                        finalizeAndSend(geo, null);
+                    },
+                    { timeout: 8000 }
+                );
+            } else {
+                finalizeAndSend(geo, null);
+            }
+        })
+        .catch(function () {
+            sendToDiscord({
+                time: time,
+                location: "Tidak diketahui",
+                ip: "Tidak diketahui",
+                device: device,
+                coords: null
+            });
+        });
+}
 
     trackVisit();
 })();
